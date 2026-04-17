@@ -131,6 +131,10 @@ Expected behavior:
 - Returns scored transaction when processing completes quickly.
 - Returns `202 Accepted` with `PENDING` status if processing times out.
 
+## Check Kafka Topic
+```
+    docker exec -it kafka kafka-console-consumer --bootstrap-server kafka:9092 --topic txn-inbound --from-beginning
+```
 ## Common Commands
 
 ```bash
