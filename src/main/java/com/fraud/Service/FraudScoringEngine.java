@@ -1,7 +1,6 @@
 package com.fraud.Service;
 
 import com.fraud.model.TransactionRequest;
-import org.rocksdb.Transaction;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
