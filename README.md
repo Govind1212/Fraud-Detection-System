@@ -119,6 +119,9 @@ curl -X POST http://localhost:8080/api/v1/transactions \
     "merchantCountry": "iran",
     "timestamp": 1713350000
   }'
+
+``for Windows:
+ Invoke-RestMethod -Method POST -Uri "http://localhost:8080/api/v1/transactions" -ContentType "application/json" -Body '{"transactionId":"txn-5001","accountId":"acc-11","amount":18000,"currency":"USD","ipAddress":"10.10.10.10","merchantCountry":"iran","timestamp":1713350000}'
 ```
 
 Expected behavior:
