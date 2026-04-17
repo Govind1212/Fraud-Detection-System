@@ -48,7 +48,7 @@ public class TransactionController {
 
     //Endpoint for a enterprises to poll if they received a pending status
     @GetMapping("/{transactionID}")
-    public ResponseEntity<?> getTransactionStatus(@PathVariable String TransactionID, @PathVariable String transactionID)
+    public ResponseEntity<?> getTransactionStatus(@PathVariable String transactionID)
     {
         TransactionScored result = resultManager.getCompletedResult(transactionID);
 

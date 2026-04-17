@@ -12,7 +12,7 @@ public class FraudScoringEngine {
     @Value("#{'${com.enterprise.fraud.scoring.system.high.risk.countries}'.split(',')}")
     private List<String> HIGH_RISK_COUNTRIES;
 
-    @Value(("#{'${com.enterprise.fraud.scoring.system.threshold.amount}"))
+    @Value("${com.enterprise.fraud.scoring.system.threshold.amount}")
     private String thresholdAmount;
 
     public int calculateScore(TransactionRequest txn)

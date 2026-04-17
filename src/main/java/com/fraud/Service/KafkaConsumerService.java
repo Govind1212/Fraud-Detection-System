@@ -16,7 +16,7 @@ public class KafkaConsumerService {
     private final KafkaProducerService producerService;
     private final TransactionresultManager resultManager;
 
-    @KafkaListener(topics="${kafka.topic.inboun}", groupId = "fraud-processing-group")
+    @KafkaListener(topics="${kafka.topic.inbound}", groupId = "fraud-processing-group")
     public void consumeTransaction(TransactionRequest request)
     {
         log.debug("Consumed transaction ID: {}", request.getTransactionId());

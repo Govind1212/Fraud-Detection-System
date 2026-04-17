@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class KafkaProducerService {
     private  final KafkaTemplate<String, Object>kafkaTemplate;
 
-    @Value("${kafka.topic.inboun}")
+    @Value("${kafka.topic.inbound}")
     private String inboundTopic;
 
     @Value(("${kafka.topic.outbound}"))
