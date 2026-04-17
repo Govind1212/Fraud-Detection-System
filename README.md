@@ -23,7 +23,7 @@ You can use the Maven wrapper included in this repo, so a separate Maven install
 ## 1) Clone the Repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Govind1212/Fraud-Detection-System.git
 cd demo
 ```
 
