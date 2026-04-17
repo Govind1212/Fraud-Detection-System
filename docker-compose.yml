@@ -8,7 +8,7 @@ services:
     ports:
       - "2181:2181"
 
-  kafka:   # ✅ FIXED (was Kafka)
+  kafka:
     image: bitnami/kafka:latest
     ports:
       - "9092:9092"
@@ -21,11 +21,20 @@ services:
     depends_on:
       - zookeeper
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379-6379"
+
   fraud-service:
     build: .
     ports:
       - "8080:8080"
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
     depends_on:
       - kafka
+      - redis
+
