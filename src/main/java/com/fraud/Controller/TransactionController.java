@@ -7,14 +7,12 @@ import com.fraud.model.TransactionScored;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
@@ -36,8 +34,31 @@ public class TransactionController {
         //Publis to kafka
         producerService.publishRawTransaction(request);
         return future
-                .orTimeout(5, TimeUnit.SECONDS)
+                .orTimeout(3, TimeUnit.SECONDS)
                 .thenApply(ResponseEntity::ok)
-                .exceptionally(ex->ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build());
+                .exceptionally(ex->{
+                    if(ex.getCause() instanceof TimeoutException)
+                    {
+                        TransactionScored pendingResponse = new TransactionScored(request.getTransactionId(),0,"PENDING");
+                        return ResponseEntity.status(HttpStatus.ACCEPTED).body(pendingResponse);
+                    }
+                   return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                });
+    }
+
+    //Endpoint for a enterprises to poll if they received a pending status
+    @GetMapping("/{transactionID}")
+    public ResponseEntity<?> getTransactionStatus(@PathVariable String TransactionID, @PathVariable String transactionID)
+    {
+        TransactionScored result = resultManager.getCompletedResult(transactionID);
+
+        if(result!=null)
+        {
+            return ResponseEntity.ok(result);
+        }
+        else {
+            TransactionScored pendingresponse = new TransactionScored(transactionID,0,"PENDING");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(pendingresponse);
+        }
     }
 }

@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentMap;
 public class TransactionresultManager {
 
     private final Map<String, CompletableFuture<TransactionScored>> pendingRequests = new ConcurrentHashMap<>();
+    private final Map<String, TransactionScored> completedResults = new ConcurrentHashMap<>();
 
     public CompletableFuture<TransactionScored> createPendingRequest(String transactionId)
     {
@@ -22,6 +23,7 @@ public class TransactionresultManager {
 
     public void completeRequest(TransactionScored result)
     {
+        completedResults.put(result.getTransactionId(), result);
         CompletableFuture<TransactionScored> future = pendingRequests.remove(result.getTransactionId());
         if(future != null)
         {
@@ -29,5 +31,9 @@ public class TransactionresultManager {
         }
     }
 
+    public TransactionScored getCompletedResult(String transactionID)
+    {
+        return completedResults.get(transactionID);
+    }
 
 }
